@@ -23,7 +23,7 @@ a= (-1.*y) .* log(sigmoid( X * theta));
 b = (1 .- y) .* log(1 .- (sigmoid( X * theta )));
 J = (1/m)* sum(a - b)
 
-
+grad = (1/m)* (sigmoid( X * theta) - y)' * X;
 
 
 
