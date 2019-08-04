@@ -22,7 +22,9 @@ b = (1 .- y) .* log(1 .- (sigmoid( X * theta )));
 r = lambda / (2*m)* sum(theta(2:size(theta)).^2);
 J = (1/m)* sum(a - b) + r;
 
-grad = ((1/m)* (sigmoid( X * theta) - y)' * X) + ((lambda/m)*theta)';
+grad(1) = ((1/m)* (sigmoid( X * theta) - y)' * X(:,1));
+
+grad(2:size(theta)) = ((1/m)* (sigmoid( X * theta) - y)' * X(:,2:end)) + ((lambda/m)*theta(2:end))';
 
 
 
