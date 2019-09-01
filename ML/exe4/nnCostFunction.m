@@ -69,37 +69,43 @@ for i=1:m
 end
 
 
-X = [ones(m, 1) X];
-r = sigmoid(X * Theta1');
-t = [ones(size(r,1), 1) r];
-f = sigmoid(t * Theta2');
+a1 = [ones(m, 1) X];
+z2 = a1  * Theta1';
+a2 = sigmoid(z2);
+a2 = [ones(size(a2,1), 1) a2];
+z3 = a2 * Theta2'
+a3 = sigmoid(z3);
 
 penalty = (lambda/(2*m))*(sum(sum(Theta1(:, 2:end).^2, 2)) + sum(sum(Theta2(:,2:end).^2, 2)));
 
 
 
 
-J = (1/m)*sum(sum((-Y).*log(f) - (1-Y).*log(1-f), 2));
+J = (1/m)*sum(sum((-Y).*log(a3) - (1-Y).*log(1-a3), 2));
 J = J + penalty;
 
 
 
 
+g3 = a3 - y; 
+g2 = ((g3 * Theta2 ) .* sigmoidGradient([ones(size(z2, 1), 1) z2]))(:, 2:end);
 
 
 
+delta1 = 0;
+delta2 = 0;
+
+delta1 = delta1 + (g2' * a1);
+delta2 = delta2 + (g3' * a2);
 
 
-
-
-
-
+Theta1_grad = delta1./m + (lambda/m)*[zeros(size(Theta1,1), 1) Theta1(:, 2:end)];
+Theta2_grad = delta2./m + (lambda/m)*[zeros(size(Theta2,1), 1) Theta2(:, 2:end)];
 % -------------------------------------------------------------
 
 % =========================================================================
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
