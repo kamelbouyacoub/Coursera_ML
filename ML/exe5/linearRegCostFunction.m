@@ -9,10 +9,11 @@ function [J, grad] = linearRegCostFunction(X, y, theta, lambda)
 m = length(y); % number of training examples
 l = [1, 0];
 % You need to return the following variables correctly 
+mask = ones(size(theta));
+mask(1) = 0;
 
-
-J = (1/(2*m)) * sum(((X*theta) - y).^2) + (lambda/ (2 * m))* (sum(theta(2:end).^2));
-grad = zeros(size(theta));
+J = (1/(2*m)) * sum(((X*theta) - y).^2) + (lambda/ (2 * m))* (sum(theta(2:end,:).^2));
+b= (1/m) * ((((X*theta) - y)' * X )'+ (lambda *  (theta.* mask)));
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Compute the cost and gradient of regularized linear 
@@ -34,6 +35,8 @@ grad = zeros(size(theta));
 
 % =========================================================================
 
-grad = grad(:);
+grad = zeros(size(theta));
+grad = b(:)
+
 
 end
